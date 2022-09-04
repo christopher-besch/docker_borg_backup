@@ -7,9 +7,8 @@ set -euo pipefail
 IFS=$' \n\t'
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-echo "running borg_backup at $(date)"
-ORIGIN="/var/lib/borg_backup/origin"
-REPO="/var/lib/borg_backup/repo"
+ORIGIN="/origin"
+REPO="/repo"
 
 function create_backup() {
     export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
@@ -28,12 +27,11 @@ function create_backup() {
     borg compact $REPO
 }
 
-echo "stopping containers"
-# ignore if containers undefined
-docker stop ${CONTAINERS+x} || true
+echo "starting backup at $(date)"
+bash /var/lib/borg_backup/handle_containers.sh stop
 
 create_backup
 
-echo "starting containers"
-docker start ${CONTAINERS+x} || true
+bash /var/lib/borg_backup/handle_containers.sh start
+echo "backup complete at $(date)"
 
