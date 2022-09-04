@@ -18,12 +18,19 @@ services:
         environment:
             # perform backup every day at 03:00
             - "CRON_TIME=0 3 * * *"
+
             # see https://borgbackup.readthedocs.io/en/stable/internals/data-structures.html?highlight=compression#compression
             - BORG_COMPRESSION=zstd,22
+
             # backup name is "${BORG_PREFIX}_{now}"
             - BORG_PREFIX=my_prefix
+
             # can be used to stop containers before and start again after backup (multiple seperated with spaces)
             # - "CONTAINERS=MyContainer1Name MyContainer2Name"
+
+            # see: https://borgbackup.readthedocs.io/en/stable/usage/prune.html
+            # leave empty to not prune
+            - "PRUNE_CFG=--keep-last 3"
       
     # required to wake up BorgBackup container
     DockerCron:
@@ -32,4 +39,5 @@ services:
             - "/var/run/docker.sock:/var/run/docker.sock:rw"
         environment:
             - TZ=Europe/Berlin
+
 ```

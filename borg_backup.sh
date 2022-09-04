@@ -20,8 +20,10 @@ function create_backup() {
     echo "creating borg backup"
     borg create -error --compression ${BORG_COMPRESSION} "${REPO}::${BORG_PREFIX}_{now}" $ORIGIN
 
-    echo "pruning borg repo"
-    borg prune --keep-last 1 --keep-monthly 1 $REPO
+    if [ ! -z ${PRUNE_CFG+x} ]; then
+        echo "running: borg prune $PRUNE_CFG $REPO"
+        borg prune $PRUNE_CFG $REPO
+    fi
 
     echo "compacting borg repo"
     borg compact $REPO
