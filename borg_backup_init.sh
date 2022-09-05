@@ -12,7 +12,7 @@ echo "init at $(date)"
 # call script when receiving SIGHUP
 # set -e exits script after trap
 set +e
-# ensure nextcloud containers are started
+# ensure containers are started
 trap 'bash "/var/lib/borg_backup/borg_backup.sh" || echo "borg_backup.sh failed" && bash /var/lib/borg_backup/handle_containers.sh start' HUP
 
 # await SIGHUP

@@ -15,6 +15,8 @@ function create_backup() {
     if ! borg check $REPO; then
         echo "ERROR: borg backup repo invalid"
         return
+    else
+        echo "borg backup repo valid"
     fi
 
     echo "creating borg backup"
@@ -23,6 +25,8 @@ function create_backup() {
     if [ ! -z ${PRUNE_CFG+x} ]; then
         echo "running: borg prune $PRUNE_CFG $REPO"
         borg prune $PRUNE_CFG $REPO
+    else
+        echo "PRUNE_CFG not defined"
     fi
 
     echo "compacting borg repo"
