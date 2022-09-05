@@ -24,7 +24,7 @@ function create_backup() {
 
     if [ ! -z ${PRUNE_CFG+x} ]; then
         echo "running: borg prune $PRUNE_CFG $REPO"
-        borg prune $PRUNE_CFG $REPO
+        bash -c "borg prune $PRUNE_CFG $REPO"
     else
         echo "PRUNE_CFG not defined"
     fi
