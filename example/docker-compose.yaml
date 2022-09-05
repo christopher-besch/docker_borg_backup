@@ -5,7 +5,7 @@ services:
         image: chrisbesch/docker_borg_backup
         volumes:
             # what to create a backup of
-            - "./origin:/origin:r"
+            - "./origin:/origin:ro"
             # where to store backup (needs to be initialized with `borg init --encryption=none ./borg_repo`)
             - "./borg_repo:/repo"
             # required when stopping containers before backup
