@@ -11,6 +11,7 @@ services:
             # required when stopping containers before backup
             # - "/var/run/docker.sock:/var/run/docker.sock:rw"
         environment:
+            - TZ=Europe/Berlin
             # perform backup every day at 03:00
             - "CRON_TIME=0 3 * * *"
 
