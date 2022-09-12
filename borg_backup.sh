@@ -20,7 +20,7 @@ function create_backup() {
     fi
 
     echo "creating borg backup"
-    borg create --error --compression $BORG_COMPRESSION "${REPO}::${BORG_PREFIX}_{now}" $ORIGIN
+    borg create --info --compression $BORG_COMPRESSION "${REPO}::${BORG_PREFIX}_{now}" $ORIGIN
 
     if [ ! -z ${PRUNE_CFG+x} ]; then
         echo "running: borg prune $PRUNE_CFG $REPO"
