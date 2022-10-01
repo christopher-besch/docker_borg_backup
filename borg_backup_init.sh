@@ -13,6 +13,8 @@ echo "init at $(date)"
 # set -e exits script after trap
 set +e
 # ensure containers are started
+bash "/var/lib/borg_backup/borg_backup.sh" || echo "borg_backup.sh failed" && bash /var/lib/borg_backup/handle_containers.sh start
+exit
 trap 'bash "/var/lib/borg_backup/borg_backup.sh" || echo "borg_backup.sh failed" && bash /var/lib/borg_backup/handle_containers.sh start' HUP
 
 # await SIGHUP

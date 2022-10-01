@@ -12,7 +12,7 @@ REPO="/repo"
 
 function create_backup() {
     export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
-    if ! borg check $REPO; then
+    if ! borg -r $REPO check; then
         echo "ERROR: borg backup repo invalid"
         return
     else
@@ -20,17 +20,17 @@ function create_backup() {
     fi
 
     echo "creating borg backup"
-    borg create --info --compression $BORG_COMPRESSION "${REPO}::${BORG_PREFIX}_{now}" $ORIGIN
+    borg -r $REPO create --info --compression $BORG_COMPRESSION "${BORG_PREFIX}_{now}" $ORIGIN
 
     if [ ! -z ${PRUNE_CFG+x} ]; then
-        echo "running: borg prune $PRUNE_CFG $REPO"
-        borg prune $PRUNE_CFG $REPO
+        echo "running: borg -r $REPO prune $PRUNE_CFG"
+        borg -r $REPO prune $PRUNE_CFG
     else
         echo "PRUNE_CFG not defined"
     fi
 
     echo "compacting borg repo"
-    borg compact $REPO
+    borg -r $REPO compact
 }
 
 echo "starting backup at $(date)"
