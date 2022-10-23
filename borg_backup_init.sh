@@ -14,6 +14,8 @@ echo "init at $(date)"
 if [ -z "$(ls -A $REPO)" ]; then
    echo "$REPO is empty, creating borg repo"
    borg -r $REPO rcreate --encryption=none
+else
+    echo "$REPO is not empty"
 fi
 
 # call script when receiving SIGHUP
