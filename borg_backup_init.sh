@@ -26,6 +26,6 @@ trap 'bash "/var/lib/borg_backup/borg_backup.sh" || echo "borg_backup.sh failed"
 
 # await SIGHUP
 while :; do
-    sleep 10 & wait ${!}
+    sleep 2 & wait ${!}
 done
 
