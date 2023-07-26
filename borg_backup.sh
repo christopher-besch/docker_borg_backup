@@ -9,6 +9,7 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 ORIGIN="/origin"
 REPO="/repo"
+BORG_EXCLUDE="/borg_exclude"
 
 function create_backup() {
     export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
@@ -19,8 +20,14 @@ function create_backup() {
         echo "borg backup repo valid"
     fi
 
-    echo "creating borg backup"
-    borg -r $REPO create --info --compression $BORG_COMPRESSION "${BORG_PREFIX}_{now}" $ORIGIN
+    if [[ -f $BORG_EXCLUDE ]]; then
+        echo "creating borg backup with excluded patterns:"
+        cat $BORG_EXCLUDE
+        borg -r $REPO create --info --exclude-from $BORG_EXCLUDE --compression $BORG_COMPRESSION "${BORG_PREFIX}_{now}" $ORIGIN
+    else
+        echo "creating borg backup without excluded patterns"
+        borg -r $REPO create --info --compression $BORG_COMPRESSION "${BORG_PREFIX}_{now}" $ORIGIN
+    fi
 
     if [ ! -z ${PRUNE_CFG+x} ]; then
         echo "running: borg -r $REPO prune $PRUNE_CFG"

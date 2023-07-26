@@ -13,6 +13,8 @@ services:
             - "./origin:/origin:r"
             # where to store backup (needs to be initialized with `borg init --encryption=none ./borg_repo`)
             - "./borg_repo:/repo"
+            # optional: borg patterns that should be excluded
+            - "./borg_exclude:/borg_exclude"
             # required when stopping containers before backup
             # - "/var/run/docker.sock:/var/run/docker.sock:rw"
         environment:
